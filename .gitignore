@@ -1,0 +1,73 @@
+# Binaries
+bin/
+dist/
+build/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go
+*.test
+*.out
+coverage.out
+.coverprofile
+vendor/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+logs/
+tmp/
+
+# Env files
+.env
+.env.local
+.env.dev
+.env.test
+.env.prod
+.env.*
+!.env.example
+
+# Secrets / keys
+*.pem
+*.key
+*.crt
+secrets/
+vault/
+
+# OS files
+Thumbs.db
+
+# Docker
+docker-data/
+postgres-data/
+redis-data/
+
+# Generated
+gen/
+mock/
+mocks/
+
+# Test artifacts
+test-results/
+reports/
+
+# Terraform / infra if later added
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Coverage / profiling
+coverage/
+pprof/
+cpu.prof
+mem.prof
