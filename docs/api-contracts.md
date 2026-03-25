@@ -72,10 +72,7 @@ sha512(iin + request_time + secret)
 ```
 
 ### Параметры ответа data
-Параметр	Тип	Обяз.	Описание
-merchant_id	integer	да	Идентификатор мерчанта
-iin	string(12)	да	ИИН клиента
-contracts	array of contract	да	Список договоров клиента, может быть пустым
+
 | Параметр      | Тип               | Обязательность | Описание |
 |---------------|-------------------|----------------|----------|
 | merchant_id   | integer           | да             | Идентификатор мерчанта в OnePay |
@@ -83,11 +80,11 @@ contracts	array of contract	да	Список договоров клиента,
 | contracts     | array of contract | да             | Список договоров клиента, может быть пустым |
 
 
-Структура элемента contracts[]
+### Структура элемента `contracts[]`
 | Параметр        | Тип           | Обязательность | Описание |
 |-----------------|---------------|----------------|----------|
-| contract_number |	string(1..50) |	да             | Номер договора |
-| contract_status |	string(1..30) |	да             | Статус договора |
+| contract_number | string(1..50) | да             | Номер договора |
+| contract_status | string(1..30) | да             | Статус договора |
 
 ### Пример запроса
 ```text
@@ -184,7 +181,7 @@ sha512(contract_number + request_time + secret)
 | merchant_id        |	integer       |	да    |	Идентификатор мерчанта |
 | reference_id       |	string(1..64) |	да    |	Идентификатор платежа на стороне Каспи |
 | payment_id         |	integer       |	да    |	Идентификатор платежа в OnePay |
-| iin                |	string(12)    |	да    |	ИИН клиента |
+| iin                |	string(12)    |	нет   |	ИИН клиента |
 | contract_number    |	string(1..50) |	да    |	Номер договора |
 | repayment_type     |	integer       |	да    |	Тип погашения, значение 1 |
 | monthly_due_amount |	number(18,2)  |	да    |	Сумма ежемесячного платежа |
@@ -199,7 +196,7 @@ sha512(contract_number + request_time + secret)
 | Параметр           | Тип            | Обяз. | Описание |
 |--------------------|----------------|-------|----------|
 | merchant_id        |	integer       |	да    |	Идентификатор мерчанта |
-| reference_id       |	string(1..64) |	да    |	Идентификатор сессии/запроса |
+| reference_id       |	string(1..64) |	да    |	Идентификатор платежа на стороне Kaspi |
 | payment_id         |	integer       |	да    |	Идентификатор платежа в OnePay |
 | iin                |	string(12)    |	да    |	ИИН клиента |
 | contract_number    |	string(1..50) |	да    |	Номер договора |
@@ -223,7 +220,7 @@ GET /api/kaspi/repayment?merchant_id=1&contract_number=DZ-458721&iin=90010130012
   "success": true,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000001,
+    "reference_id": "KSP-SESSION-00001",
     "payment_id": 202603160001,
     "iin": "900101300123",
     "contract_number": "DZ-458721",
@@ -253,7 +250,7 @@ GET /api/kaspi/repayment?merchant_id=1&iin=900101300123&contract_number=DZ-45872
   "success": true,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000002,
+    "reference_id": "KSP-SESSION-00002",
     "payment_id": 202603160002,
     "iin": "900101300123",
     "contract_number": "DZ-458721",
@@ -278,7 +275,7 @@ GET /api/kaspi/repayment?merchant_id=1&iin=900101300123&contract_number=DZ-45872
   "success": false,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000002,
+    "reference_id": "KSP-SESSION-00002",
     "iin": "900101300123",
     "contract_number": "DZ-458721",
     "repayment_type": 2
@@ -320,7 +317,7 @@ GET /api/kaspi/repayment?merchant_id=1&iin=900101300123&contract_number=DZ-45872
 | merchant_id        |	integer       |	да    |	Идентификатор мерчанта |
 | reference_id       |	string(1..64) |	да    |	Идентификатор платежа на стороне Каспи |
 | payment_id         |	integer       |	да    |	Идентификатор платежа в OnePay |
-| iin                |	string(12)    |	да    |	ИИН клиента |
+| iin                |	string(12)    |	нет   |	ИИН клиента |
 | contract_number    |	string(1..50) |	да    |	Номер договора |
 | repayment_type     |	integer       |	да    |	Тип погашения |
 | entered_amount     |  number(18,2)  | да    | Введенная клиентом сумма |
@@ -337,9 +334,9 @@ GET /api/kaspi/repayment?merchant_id=1&iin=900101300123&contract_number=DZ-45872
 | merchant_id        |	integer       |	да    |	Идентификатор мерчанта |
 | reference_id       |	string(1..64) |	да    |	Идентификатор платежа на стороне Каспи |
 | payment_id         |	integer       |	да    |	Идентификатор платежа в OnePay |
-| iin                |	string(12)    |	да    |	ИИН клиента |
+| iin                |	string(12)    |	нет   |	ИИН клиента |
 | contract_number    |	string(1..50) |	да    |	Номер договора |
-| repayment_type     |	integer       |	да    |	Тип погашения, значение 1 |
+| repayment_type     |	integer       |	да    |	Тип погашения |
 | entered_amount     |  number(18,2)  | да    | Введенная клиентом сумма |
 | min_payment_amount |	number(18,2)  |	нет   |	Минимально допустимая сумма погашения |
 
@@ -367,7 +364,7 @@ GET /api/kaspi/calculate-repayment?merchant_id=1&iin=900101300123&contract_numbe
   "success": true,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000002,
+    "reference_id": "KSP-SESSION-00002",
     "payment_id": 202603160002,
     "iin": "900101300123",
     "contract_number": "DZ-458721",
@@ -392,7 +389,7 @@ GET /api/kaspi/calculate-repayment?merchant_id=1&iin=900101300123&contract_numbe
   "success": false,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000002,
+    "reference_id": "KSP-SESSION-00002",
     "payment_id": 202603160002,
     "contract_number": "DZ-458721",
     "repayment_type": 2,
@@ -411,7 +408,7 @@ GET /api/kaspi/calculate-repayment?merchant_id=1&iin=900101300123&contract_numbe
   "success": false,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000002,
+    "reference_id": "KSP-SESSION-00002",
     "payment_id": 202603160002,
     "contract_number": "DZ-458721",
     "repayment_type": 2,
@@ -489,7 +486,7 @@ GET /api/kaspi/payment?merchant_id=1&payment_id=20260316000010&reference_id=KSP-
   "success": true,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000003,
+    "reference_id": "KSP-SESSION-00003",
     "payment_id": 202603160010,
     "repayment_type": 1,
     "iin": "900101300123",
@@ -513,7 +510,7 @@ GET /api/kaspi/payment?merchant_id=1&payment_id=20260316000010&reference_id=KSP-
   "success": false,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000003,
+    "reference_id": "KSP-SESSION-00003",
     "payment_id": 202603160010
   },
   "error_code": 1007,
@@ -529,7 +526,7 @@ GET /api/kaspi/payment?merchant_id=1&payment_id=20260316000010&reference_id=KSP-
   "success": false,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000003,
+    "reference_id": "KSP-SESSION-00003",
     "payment_id": 202603160010,
     "status": 1
   },
@@ -631,7 +628,7 @@ Content-Type: application/json
   "success": true,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000003,
+    "reference_id": "KSP-PAY-00003",
     "rnn": 9876543210123456,
     "payment_id": 202603160010,
     "status": 1
@@ -649,7 +646,7 @@ Content-Type: application/json
   "success": true,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000003,
+    "reference_id": "KSP-PAY-00003",
     "rnn": 9876543210123456,
     "payment_id": 202603160010,
     "status": 1
@@ -667,7 +664,7 @@ Content-Type: application/json
   "success": true,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000003,
+    "reference_id": "KSP-PAY-00003",
     "rnn": 9876543210123456,
     "payment_id": 202603160010,
     "status": 2
@@ -685,7 +682,7 @@ Content-Type: application/json
   "success": false,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000003,
+    "reference_id": "KSP-PAY-00003",
     "rnn": 9876543210123456
   },
   "error_code": 1010,
@@ -701,7 +698,7 @@ Content-Type: application/json
   "success": false,
   "data": {
     "merchant_id": 1,
-    "reference_id": 10000003,
+    "reference_id": "KSP-PAY-00003",
     "rnn": 9876543210123456,
     "payment_id": 202603160010
   },

@@ -1,12 +1,3 @@
-
----
-
-## `docs/kaspi-protocol.md`
-
-Этот файл я сформировал как сжатую, инженерную выжимку протокола для агента. Основание: три сценария, состав участников, HTTPS/JSON, лимит ответа 15 секунд, `merchant_id`, формулы подписи и набор сервисов прямо описаны в протоколе. Также в схеме отдельно закреплены идемпотентность callback, резервная проверка статуса и допущение о возможном будущем согласовании формата подписи. :contentReference[oaicite:4]{index=4} :contentReference[oaicite:5]{index=5}
-
-```md
-
 # Kaspi Protocol Summary for Implementation
 
 ## 1. Purpose
@@ -101,6 +92,7 @@ All OnePay responses to Kaspi use the same JSON envelope:
   "error_code": 0,
   "message": "OK"
 }
+```
 
 Rules:
 - success — operation result flag

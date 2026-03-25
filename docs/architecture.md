@@ -289,3 +289,4 @@ Kaspi вызывает API приложения:
 ├── docs/
 ├── deploy/
 └── scripts/
+```
