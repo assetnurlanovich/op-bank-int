@@ -10,6 +10,7 @@
 - модульный монолит
 - четкое разделение слоев
 - stateless application layer
+- audit-first обработка интеграционных событий
 
 ---
 
@@ -23,12 +24,14 @@
 - callback
 
 ### Исходящие вызовы (OnePay → Kaspi)
+- invoice/payment registration
 - status
 
 ### Внутренние вызовы (OnePay Adapter → Core Systems)
 - contracts service
 - repayment calculation
 - payment creation
+- invoice preparation / bill issuing
 - repayment posting
 
 ---
@@ -42,6 +45,7 @@
 
 ### 3.2 Security Layer
 - проверка подписи
+- проверка merchant_id
 - проверка request_time
 - защита от replay
 
@@ -51,6 +55,7 @@
 - RepaymentService
 - CalculateRepaymentService
 - PaymentService
+- InvoiceRegistration flow
 - CallbackService
 - StatusCheckService
 
@@ -59,18 +64,22 @@
 - Payment
 - Contract
 - Repayment
+- ExternalPaymentReference
 - CallbackEvent
 - Status
 
 ### 3.5 Persistence Layer
 - PostgreSQL (источник истины)
 - Redis (idempotency / cache)
+- audit/integration logs
 
 ### 3.6 Kaspi Client
+- HTTP клиент для invoice/payment registration
 - HTTP клиент для status
 
 ### 3.7 Background Jobs
 - status polling
+- retry internal posting
 - retry
 - reconciliation
 
@@ -79,15 +88,22 @@
 ## 4. Потоки
 
 ### Основной поток оплаты
-1. Kaspi → repayment/calculate
-2. Kaspi → payment
+1. Kaspi → repayment/calculate либо OnePay → Kaspi invoice registration
+2. Kaspi → payment или клиент переходит к оплате в Kaspi app
 3. Kaspi → callback
-4. OnePay → внутреннее проведение
+4. OnePay сохраняет внешний платежный факт
+5. OnePay → внутреннее проведение
 
 ### Fallback поток
 1. callback не пришел
 2. background job вызывает status
 3. синхронизация состояния
+
+### Ключевые правила
+- callback является основным источником истины по оплате
+- return_url не является подтверждением оплаты
+- повторный callback не вызывает повторных side effects
+- подтвержденный внешний платеж не должен теряться даже при ошибке внутреннего posting
 
 ---
 
@@ -108,6 +124,7 @@
 - callbacks
 - idempotency_keys
 - status_checks
+- integration_logs
 
 ---
 
@@ -135,6 +152,7 @@
 - metrics
 - tracing
 - health endpoints
+- audit trail of inbound/outbound events
 
 ---
 
