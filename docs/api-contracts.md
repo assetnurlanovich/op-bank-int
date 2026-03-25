@@ -25,8 +25,9 @@
 - запрос с параметром неверного типа отклоняется;
 - запрос с неверной подписью отклоняется.
 
-> Правила типов, обязательности, валидации параметров и формирования подписи для всех endpoint описаны в документе `request-validation-and-signature.md`.  
-> Для каждого endpoint в настоящем документе указаны конкретные параметры запроса и ответа.
+> Правила типов, обязательности, валидации параметров и формирования подписи для всех входящих endpoint описаны в документе `request-validation-and-signature.md`.  
+> Исходящие контракты OnePay -> Kaspi описаны в `outbound-kaspi-contracts.md`.  
+> Централизованный каталог кодов ошибок описан в `error-codes.md`.
 
 ## Общий формат ответа
 
@@ -629,7 +630,7 @@ Content-Type: application/json
   "data": {
     "merchant_id": 1,
     "reference_id": "KSP-PAY-00003",
-    "rnn": 9876543210123456,
+    "rnn": "RNN-20260316-00003",
     "payment_id": 202603160010,
     "status": 1
   },
@@ -647,7 +648,7 @@ Content-Type: application/json
   "data": {
     "merchant_id": 1,
     "reference_id": "KSP-PAY-00003",
-    "rnn": 9876543210123456,
+    "rnn": "RNN-20260316-00003",
     "payment_id": 202603160010,
     "status": 1
   },
@@ -665,7 +666,7 @@ Content-Type: application/json
   "data": {
     "merchant_id": 1,
     "reference_id": "KSP-PAY-00003",
-    "rnn": 9876543210123456,
+    "rnn": "RNN-20260316-00003",
     "payment_id": 202603160010,
     "status": 2
   },
@@ -683,7 +684,7 @@ Content-Type: application/json
   "data": {
     "merchant_id": 1,
     "reference_id": "KSP-PAY-00003",
-    "rnn": 9876543210123456
+    "rnn": "RNN-20260316-00003"
   },
   "error_code": 1010,
   "message": "Некорректные параметры callback"
@@ -699,7 +700,7 @@ Content-Type: application/json
   "data": {
     "merchant_id": 1,
     "reference_id": "KSP-PAY-00003",
-    "rnn": 9876543210123456,
+    "rnn": "RNN-20260316-00003",
     "payment_id": 202603160010
   },
   "error_code": 1009,

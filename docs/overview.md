@@ -22,6 +22,7 @@
   - callback
 
 - вызовы в Kaspi:
+  - invoice / payment registration
   - status (резервная сверка)
 
 - обработку платежных событий:
@@ -32,6 +33,7 @@
 - интеграцию с внутренними системами:
   - получение договоров
   - расчет задолженности
+  - подготовка invoice-based платежа
   - проведение погашения
 
 ---
@@ -61,6 +63,7 @@
 - REST API (JSON)
 - PostgreSQL + Redis
 - синхронная обработка + фоновые задачи
+- delivery через контейнеризацию и CI/CD pipeline по `docs/configuration-and-cicd.md`
 
 ---
 

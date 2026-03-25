@@ -20,6 +20,7 @@
 - проверка идемпотентности входящих уведомлений;
 - маршрутизация вызовов во внутренние сервисы OnePay;
 - фиксация и актуализация статусов платежей;
+- регистрация invoice / payment на стороне Kaspi для сценария, стартующего в OnePay / Ломбарде;
 - выполнение резервной сверки статуса при отсутствии или ошибке callback.
 
 ## Текущий функциональный контур
@@ -32,7 +33,21 @@
 - `POST /api/kaspi/callback`
 
 ### Исходящие вызовы в Kaspi
+- регистрация invoice / payment;
 - `GET /api/payment/status`
+
+## Набор спецификаций
+
+Для полной реализации приложения и delivery-контура следует использовать весь комплект документов из `docs/`, включая:
+- `docs/api-contracts.md`
+- `docs/request-validation-and-signature.md`
+- `docs/lombard-api-contracts.md`
+- `docs/outbound-kaspi-contracts.md`
+- `docs/internal-system-contracts.md`
+- `docs/service-logic.md`
+- `docs/data-model-and-state.md`
+- `docs/error-codes.md`
+- `docs/configuration-and-cicd.md`
 
 ## Ключевые бизнес-правила
 - все запросы должны проходить проверку подписи;

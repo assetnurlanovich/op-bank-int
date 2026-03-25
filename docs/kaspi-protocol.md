@@ -111,7 +111,7 @@ Where field1 depends on the service:
 - calculate-repayment → payment_id
 - payment → payment_id
 - callback → payment_id
-- status → payment_id
+- status → выбираемое базовое поле, см. `docs/outbound-kaspi-contracts.md`
 
 Implementation notes:
 - use exact concatenation without separators unless protocol is уточнен otherwise;
@@ -165,7 +165,14 @@ Expected baseline:
 - signature is based on payment_id
 
 Signature:
-sha512(payment_id + request_time + secret)
+sha512(signature_base + request_time + secret)
+
+Where `signature_base` is selected by priority:
+- `payment_id`, if present
+- otherwise `reference_id`
+- otherwise `rnn`
+
+Detailed outbound contract is fixed in `docs/outbound-kaspi-contracts.md`.
 
 ### 9.4. GET /api/kaspi/payment
 

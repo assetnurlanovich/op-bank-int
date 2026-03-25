@@ -120,11 +120,9 @@
 
 Основные таблицы:
 - payments
-- payment_status_history
-- callbacks
-- idempotency_keys
-- status_checks
-- integration_logs
+- payment_links
+- payment_logs
+- merchant_fees
 
 ---
 
