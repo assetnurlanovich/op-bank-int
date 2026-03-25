@@ -4,7 +4,14 @@
 
 This document is an implementation-oriented summary of the agreed interaction protocol between OnePay and Kaspi.
 
-It is intended to be used by engineers and coding agents as the primary functional contract for the OnePay ↔ Kaspi integration service.
+It is intended to be used by engineers and coding agents as a compact overview, but not as the primary source of truth.
+
+Source-of-truth priority:
+1. `docs/api-contracts.md`
+2. `docs/request-validation-and-signature.md`
+3. `docs/outbound-kaspi-contracts.md`
+4. `docs/error-codes.md`
+5. this summary document
 
 
 ## 2. Participants
@@ -165,14 +172,7 @@ Expected baseline:
 - signature is based on payment_id
 
 Signature:
-sha512(signature_base + request_time + secret)
-
-Where `signature_base` is selected by priority:
-- `payment_id`, if present
-- otherwise `reference_id`
-- otherwise `rnn`
-
-Detailed outbound contract is fixed in `docs/outbound-kaspi-contracts.md`.
+sha512(payment_id + request_time + secret)
 
 ### 9.4. GET /api/kaspi/payment
 
@@ -180,7 +180,7 @@ Purpose:
 return payment information / invoice-related payment parameters for a previously prepared payment scenario.
 
 Signature:
-sha512(payment_id + request_time + secret)
+see `docs/outbound-kaspi-contracts.md`
 
 ### 9.5. POST /api/kaspi/callback
 

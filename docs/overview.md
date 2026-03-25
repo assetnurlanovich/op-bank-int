@@ -45,6 +45,16 @@
 - обеспечивает независимый lifecycle;
 - позволяет масштабировать интеграции на другие банки.
 
+## Приоритет документов
+
+При конфликте документов использовать следующий приоритет:
+1. `api-contracts.md`, `request-validation-and-signature.md`, `outbound-kaspi-contracts.md`, `inbound-onepay-commands.md`, `error-codes.md`
+2. `lombard-api-contracts.md`, `internal-system-contracts.md`, `service-logic.md`, `data-model-and-state.md`
+3. `configuration-and-cicd.md`, `nonfunctional-requirements.md`
+4. `architecture.md`, `architecture2.md`, `overview.md`, `kaspi-protocol.md`
+
+Если summary-документ расходится с документом более высокого приоритета, источником истины считается документ с более высоким приоритетом.
+
 ---
 
 ## Ключевые принципы

@@ -29,6 +29,13 @@
 > Исходящие контракты OnePay -> Kaspi описаны в `outbound-kaspi-contracts.md`.  
 > Централизованный каталог кодов ошибок описан в `error-codes.md`.
 
+### HTTP status policy
+
+Для внешнего API OnePay -> Kaspi используется следующая политика:
+- любой protocol-level ответ приложения, включая business errors, validation errors, signature errors и `INTERNAL_ERROR`, возвращается как `HTTP 200 OK` с JSON envelope;
+- `error_code` и `message` внутри envelope являются каноническим способом интерпретации результата;
+- `HTTP 5xx` допустим только если сервис не смог сформировать protocol-level ответ вообще, например при аварийном сбое transport/runtime слоя.
+
 ## Общий формат ответа
 
 ```json

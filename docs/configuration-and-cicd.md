@@ -69,7 +69,15 @@
 | `REPLAY_WINDOW_SECONDS` | да | Допустимое окно для `request_time` |
 | `MASK_SENSITIVE_LOG_FIELDS` | да | Включение маскирования |
 
-## 3.5. Kaspi outbound
+## 3.5. Lombard internal API
+
+| Переменная | Обяз. | Назначение |
+|------------|-------|------------|
+| `LOMBARD_BASE_URL` | да | Базовый URL внутреннего API Ломбарда |
+| `LOMBARD_TIMEOUT` | да | Таймаут вызовов в Ломбард |
+| `LOMBARD_AUTH_TOKEN` | да | Bearer token для `Authorization` |
+
+## 3.6. Kaspi outbound
 
 | Переменная | Обяз. | Назначение |
 |------------|-------|------------|
@@ -80,7 +88,7 @@
 | `KASPI_STATUS_RETRY_COUNT` | да | Retry count для status |
 | `KASPI_STATUS_RETRY_BACKOFF` | да | Backoff между retry |
 
-## 3.6. Merchant config
+## 3.7. Merchant config
 
 ## Канонический способ для production:
 
@@ -111,7 +119,7 @@
 
 - но runtime config приложения должен нормализовать эти значения в общую merchant-модель.
 
-## 3.7. Background jobs
+## 3.8. Background jobs
 
 | Переменная | Обяз. | Назначение |
 |------------|-------|------------|
@@ -121,7 +129,7 @@
 | `POSTING_RETRY_INTERVAL` | да | Интервал retry внутреннего posting |
 | `POSTING_RETRY_MAX_ATTEMPTS` | да | Максимум retry |
 
-## 3.8. Health and metrics
+## 3.9. Health and metrics
 
 | Переменная | Обяз. | Назначение |
 |------------|-------|------------|

@@ -9,9 +9,15 @@
 
 Документ дополняет:
 - `docs/api-contracts.md`
+- `docs/inbound-onepay-commands.md`
 - `docs/lombard-api-contracts.md`
 - `docs/outbound-kaspi-contracts.md`
 - `docs/data-model-and-state.md`
+
+При конфликте документов:
+- transport-level контракты определяются `docs/api-contracts.md`, `docs/inbound-onepay-commands.md`, `docs/outbound-kaspi-contracts.md`, `docs/lombard-api-contracts.md`;
+- модель хранения определяется `docs/data-model-and-state.md`;
+- этот документ определяет orchestration-логику поверх этих контрактов.
 
 ---
 
@@ -67,8 +73,8 @@
 4. Получить локальный `payment_id` OnePay.
 5. Вызвать Ломбард `POST /internal/lombard/v1/payments/ensure` с `(payment_id, merchant_id, contract_number, iin, repayment_type, reference_id)`.
 6. Сохранить `bank_id`, `source_id`, денежный snapshot и связь с Ломбардом.
-6. Сформировать ответ Kaspi.
-7. Записать audit и, при необходимости, статус history.
+7. Сформировать ответ Kaspi.
+8. Записать audit и события в `payment_logs`.
 
 Ключевые правила:
 - `payment_id` OnePay должен существовать уже на этапе `repayment`;
@@ -122,7 +128,7 @@
 ### 3.5. Invoice Registration / Payment Preparation Flow
 
 Вход:
-- внутренний вызов со стороны Ломбарда / OnePay UI, а не запрос от Kaspi
+- внутренний вызов со стороны Ломбарда / OnePay UI по контракту из `docs/inbound-onepay-commands.md`, а не запрос от Kaspi
 
 Основная логика:
 1. Принять внутреннюю команду на оплату через Kaspi.

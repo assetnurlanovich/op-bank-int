@@ -1,5 +1,11 @@
 # Architecture — OnePay ↔ Kaspi Integration Service
 
+> Этот документ является краткой архитектурной выжимкой.
+> Источником истины по контрактам, логике, хранению и ошибкам являются:
+> `api-contracts.md`, `request-validation-and-signature.md`, `outbound-kaspi-contracts.md`,
+> `inbound-onepay-commands.md`, `lombard-api-contracts.md`, `internal-system-contracts.md`,
+> `service-logic.md`, `data-model-and-state.md`, `error-codes.md`.
+
 ## 1. Общая концепция
 
 Приложение представляет собой **интеграционный адаптер** между:

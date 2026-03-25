@@ -25,6 +25,14 @@ OnePay остается владельцем интеграционного со
 - внутренний платеж;
 - внутреннее проведение.
 
+## Source of truth
+
+При конфликте документов по внутренней интеграции использовать следующий приоритет:
+1. `docs/lombard-api-contracts.md`
+2. `docs/internal-system-contracts.md`
+3. `docs/service-logic.md`
+4. `docs/architecture.md`, `docs/architecture2.md`, `docs/kaspi-protocol.md`
+
 ---
 
 ## 2. Общие правила API Ломбарда
@@ -35,7 +43,7 @@ OnePay остается владельцем интеграционного со
 - base path: `/internal/lombard/v1`;
 - API работает только во внутреннем trusted-контуре;
 - обязательны `X-Request-ID` и `X-Trace-ID`;
-- аутентификация: mTLS или внутренний `Authorization: Bearer <token>` / `X-Internal-API-Key`;
+- аутентификация: только `Authorization: Bearer <token>`;
 - подпись `sign` для этого API не нужна.
 
 ### 2.2. Формат успешного ответа
@@ -67,6 +75,20 @@ OnePay остается владельцем интеграционного со
 - `conflict`
 - `temporary`
 - `internal`
+
+### 2.4.1. HTTP status policy
+
+| Категория результата | HTTP status |
+|----------------------|-------------|
+| success | `200 OK` |
+| `validation` | `400 Bad Request` |
+| `not_found` | `404 Not Found` |
+| `conflict` | `409 Conflict` |
+| `business` | `422 Unprocessable Entity` |
+| `temporary` | `503 Service Unavailable` |
+| `internal` | `500 Internal Server Error` |
+
+OnePay client обязан читать не только HTTP status, но и тело ошибки из раздела 2.3.
 
 ### 2.5. Общие правила данных
 
@@ -234,9 +256,9 @@ OnePay остается владельцем интеграционного со
 
 ### 6.5. Идемпотентность
 
-- операция обязана быть идемпотентной по `(merchant_id, reference_id)`;
+- операция обязана быть идемпотентной по `(merchant_id, payment_id)`;
 - повторный запрос должен вернуть тот же `payment_id`;
-- конфликт другого бизнес-контекста с тем же `reference_id` должен вернуть `conflict/reference_id_conflict`.
+- повторный запрос с тем же `(merchant_id, payment_id)`, но другим `(iin, contract_number, repayment_type)` должен вернуть `conflict/payment_context_mismatch`.
 
 Примечание:
 - `payment_id` в этом endpoint — это id платежа OnePay;

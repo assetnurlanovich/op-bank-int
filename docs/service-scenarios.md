@@ -102,7 +102,7 @@ Client starts payment from Lombard / OnePay side, then finishes it in Kaspi appl
 
 ## 5.2. Main flow
 
-1. Client chooses Kaspi as payment method on Lombard / OnePay side.
+1. Lombard / OnePay side sends internal start command to OnePay by contract from `docs/inbound-onepay-commands.md`.
 2. OnePay creates internal payment entity.
 3. OnePay calculates:
    - repayment type;
@@ -164,7 +164,7 @@ Provide safe, repeatable and auditable processing of Kaspi server notification.
    - persist raw callback payload;
    - save `reference_id` / `rnn`;
    - update payment status;
-   - write status history record;
+   - write audit / status event record;
    - if `SUCCESS`, trigger internal repayment processing.
 11. Return response in unified format.
 

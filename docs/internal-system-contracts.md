@@ -9,6 +9,7 @@
 - этот документ описывает application ports;
 - минимальный transport-level HTTP API Ломбарда зафиксирован отдельно в `docs/lombard-api-contracts.md`;
 - application layer OnePay должен зависеть от портов ниже, а не от конкретного HTTP-клиента.
+- если этот документ расходится с `docs/lombard-api-contracts.md`, источником истины считается `docs/lombard-api-contracts.md` для transport и `docs/data-model-and-state.md` для локальной модели хранения OnePay.
 
 Важное правило:
 на старте transport внутренних интеграций может быть HTTP или gRPC, но application layer приложения должен зависеть не от transport, а от явных портов.
@@ -135,6 +136,11 @@
 
 Создание, чтение и актуализация внутреннего платежа.
 
+Примечание:
+- этот порт описывает logical/application-level модель OnePay;
+- transport-level вызов в Ломбард `POST /internal/lombard/v1/payments/ensure` использует уже созданный `payment_id` OnePay как correlation id;
+- поэтому application-level идемпотентность и transport-level идемпотентность могут быть выражены разными ключами, но не должны противоречить друг другу.
+
 ## 5.2. Методы
 
 `CreateOrGetPayment(ctx, request) -> payment`
@@ -153,7 +159,6 @@
 | contract_number | string(1..50) | да |
 | iin | string(12) | да |
 | repayment_type | integer | да |
-| reference_id | string(1..64) | да |
 
 ## 5.4. Payment Model
 
@@ -162,7 +167,8 @@
 | payment_id | integer | да | Идентификатор платежа OnePay |
 | merchant_id | integer | да | Мерчант |
 | source_id | string(1..64) | нет | Идентификатор платежа в Ломбарде, если он существует |
-| status | string(1..30) | да | Интеграционный статус платежа в OnePay |
+| status | integer | да | Интеграционный статус платежа в OnePay по кодам Kaspi |
+| type | integer | да | Тип платежа OnePay |
 | bank_id | string(1..64) | нет | Банковский идентификатор. Во внешних Kaspi-контрактах соответствует `reference_id` |
 | rnn | string(1..64) | нет | Внешний номер операции |
 | amount | number(18,2) | нет | Полная сумма платежа, то есть `total_amount` |
@@ -174,6 +180,7 @@
 
 - `CreateOrGetPayment` обязан быть идемпотентным по бизнес-ключу `(merchant_id, iin, contract_number)`;
 - повторный запрос не должен создавать второй платеж;
+- один `payment_id` OnePay должен соответствовать ровно одному бизнес-контексту `(merchant_id, iin, contract_number)`;
 - `AttachExternalReference` не должен терять уже сохраненный `bank_id`, если он совпадает;
 - смена `bank_id` для уже привязанного платежа должна считаться конфликтом и уходить в reconciliation;
 
@@ -280,4 +287,4 @@
 - для каждого порта должны существовать mock/fake реализации;
 - application services тестируются против интерфейсов, а не против HTTP-клиентов;
 - для `InternalPostingService` обязателен тест на идемпотентный повтор;
-- для `PaymentRegistry` обязателен тест на повторное создание по одному `reference_id`.
+- для `PaymentRegistry` обязателен тест на повторное создание по одной связке `(merchant_id, iin, contract_number)`.
